@@ -1,0 +1,134 @@
+<!Doctype html>
+<html lang="en" ng-app="nutrition" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>angular demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+    </script>
+</head>
+
+<body background="Images/bg.jpg">
+<h1 align="center" style="color: white;background-color: #2b542c" > Nutrition Stats
+    <img src="Images/nutri_logo.png" width="50" height="50"></img>
+</h1>
+<div ng-controller="nutritionCtrl">
+
+    <div class="nutritionModule">
+        <p class="currentConditions" ng-bind="nutrition.html"></p>
+        <p class="currentConditions" ng-bind="nutrition1.html"></p>
+        <p class="currentConditions" ng-bind="nutrition2.html"></p>
+        <div class="currentIcon" ng-bind="currentIcon.html"></div>
+    </div>
+    <div id="nutritionModule" ></div>
+
+    <div id = "input123">
+                <label for="foodName">Food Item</label>
+                <input type="text" id="foodName" name="foodName" placeholder="Enter food item name">
+                </br>
+                <label for="quantity">Quantity</label>
+                <input type="text" id="quantity" name="foodName" placeholder="Enter 1 or one">
+                </br>
+                <label for="size">Size</label>
+                <input type="text" id="size" name="foodName" placeholder="Ex: large,small etc..">
+                </br> </br>
+                <button id="btn" style="box-sizing: border-box" src="submit.gif" ng-click="getNutrition()"> Get Nutrition Stats
+                </button>
+        </div>
+
+    <p></p>
+    </br>
+</div>
+</body>
+
+<style>
+
+    .nutritionModule {
+        color: darkblue;
+        font-weight: bold;
+        font-size: 25px;
+        text-align: center;
+        line-height: 100px;
+        height: 350px;
+        width: 550px;
+        padding: 1em;
+        float: right;
+        right: 50px;
+        position:absolute;
+        vertical-align:top;
+        background-image: url('Images/plate.jpg');
+
+    }
+
+    input[type=text] {
+        height: 35px;
+        width: 400px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #8a6d3b;
+        border-radius: 4px;
+        box-sizing:border-box;
+    }
+    button{
+        height: 35px;
+        width: 400px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    div[id=input123]{
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        height: 300px;
+        width: 400px;
+    }
+    audio{
+        background-color: #f2f2f2;
+        width: 440px;
+    }
+
+</style>
+</html>
+
+<script>
+    angular.module('nutrition', [])
+        .controller('nutritionCtrl', function ($scope, $http) {
+
+            $scope.getNutrition = function () {
+                var food = document.getElementById("foodName").value;
+                var qty = document.getElementById("quantity").value;
+                var s = document.getElementById("size").value;
+                var text = qty + s + food;
+                var x = document.createElement("AUDIO");
+                var url2 = "https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize?username=e01d66a9-fc77-47b3-b3b8-f8d0f2522f38&password=Ix7RaPkKIftU&accept=audio/wav&text=" + text;
+                x.setAttribute("src", url2);
+                x.setAttribute("controls", "controls");
+                x.setAttribute("autoplay","autoplay");
+                document.body.appendChild(x);
+                var url = "https://api.edamam.com/api/nutrition-data?app_id=eea9deeb&app_key=db3c3bbaff25be68d64b4c3feb33f1bf&ingr=" + qty + "%20" + s + "%20" + food;
+                $http.get(url).success(function (data) {
+                        console.log(data);
+                        weight = data.totalWeight;
+                        cal = data.calories;
+                        console.log(weight);
+                        $scope.nutrition = {
+                            html: "Total Weight : " + weight + ""
+                        }
+                        $scope.nutrition1 = {
+                            html: "Calories : " + cal + ""
+                        }
+
+                    }
+                );
+            }
+        });
+</script>
