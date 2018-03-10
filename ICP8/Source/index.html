@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My AngularJS App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="app.css">
+
+    <style>
+
+        .menu input{
+            width: 300px;
+            background: transparent;
+            border: 2px solid #1ab188;
+            border-radius: 4px;
+            color: #5e5e5e;
+            font-family: 'Exo', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 6px;
+            margin-top: 10px;
+        }
+        .menu button{
+            width: 419px;
+            height:40px;
+            background:#1ab188;
+            border:  2px solid #ffffff;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #ffffff;
+            font-family: 'Exo', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 6px;
+            margin-top: 10px;
+        }
+        table {
+            max-width: 960px;
+            margin: 10px auto;
+            border: 1px solid #FFF;
+        }
+
+        caption {
+            font-size: 1.6em;
+            font-weight: 400;
+            padding: 10px 0;
+        }
+
+        thead th {
+            font-weight: 400;
+            background: #8a97a0;
+            color: #FFF;
+        }
+
+        tr {
+            background: #f4f7f8;
+            border: 1px solid #FFF;
+            margin-bottom: 5px;
+        }
+
+        tr:nth-child(even) {
+            background: #e8eeef;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 20px;
+            font-weight: 300;
+        }
+
+        tfoot tr {
+            background: none;
+        }
+
+        tfoot td {
+            padding: 10px 2px;
+            font-size: 0.8em;
+            font-style: italic;
+            color: #8a97a0;
+        }
+    </style>
+    <script type="text/javascript">
+        function computeBMI()
+        {
+            //Obtain user inputs
+            var height=Number(document.getElementById("height").value);
+            var heightunits=document.getElementById("heightunits").value;
+            var weight=Number(document.getElementById("weight").value);
+            var weightunits=document.getElementById("weightunits").value;
+            //Convert all units to metric
+            if (heightunits=="inches") height/=39.3700787;
+            if (weightunits=="lb") weight/=2.20462;
+            //Perform calculation
+            var BMI=weight/Math.pow(height,2);
+            //Display result of calculation
+            document.getElementById("output").innerText=Math.round(BMI*100)/100;
+            if (output<18.5)
+                document.getElementById("comment").value = "Underweight";
+            if (output>=18.5 && output<=25)
+                document.getElementById("comment").value = "Normal";
+            if (output>=25 && output<=30)
+                document.getElementById("comment").value = "Obese";
+            if (output>30)
+                document.getElementById("comment").value = "Overweight";
+            document.getElementById("answer").value = output;
+        }
+    </script>
+
+</head>
+
+
+<div  ng-controller="View1Ctrl" style="top: 200px">
+    <body style="background-color: #e8eeef ">
+    </body>
+    <div class="menu" id="div_SearchContainer">
+        <h1 style="background-color: lightcoral;">Body Mass Index Calculator</h1>
+        <p>Enter your height: <input type="text" id="height"/>
+            <select type="multiple" id="heightunits">
+                <option value="metres" selected="selected">Metres</option>
+                <option value="inches">inches</option>
+            </select>
+        </p>
+        <p>Enter your weight: <input type="text" id="weight"/>
+            <select type="multiple" id="weightunits">
+                <option value="kg" selected="selected">Kilograms</option>
+                <option value="lb">pounds</option>
+            </select>
+        </p>
+
+        <!--
+            <button id="btn_getReview" ng-click="computeBMI()"></button>
+     -->
+        <input type="submit" style="background-color: lightcoral;border: lightcoral" value="Compute BMI" onclick="computeBMI();">
+        <h1>Your BMI is : <span id="output"></span></h1>
+        <h1>You are : Normal </h1>
+
+    </div>
+
+    <div id="div_ReviewList" style="display:none;"  >
+
+
+        <p ng-model="ReviewWithSentiment">
+
+        <TABLE BORDER=2 CELLPADDING=4 ng-show="showt"> <TR> <TH style="color: aliceblue; background:#1ab188" COLSPAN=2>Sentiment Analysis From Using Alchemy API </TH> </TR>
+            <TR> <TD>Most recent review</TD> <TD>{{ReviewWithSentiment.reviewText}}</TD> </TR>
+            <TR> <TD>Sentiment of the review</TD> <TD>{{ReviewWithSentiment.sentiment}}</TD> </TR>
+            <TR> <TD>Sentiment Score of the review</TD> <TD>{{ReviewWithSentiment.score}}</TD> </TR>
+            <TR> <TH style="color: aliceblue; background:#1ab188" COLSPAN=2 BGCOLOR="#445553">{{ReviewWithSentiment.reviewText}}</TH> </TR>
+        </TABLE>
+        <span ng-show="shows" style="text-align: center;">{{noText}}</span>
+        </p>
+    </div>
+</div>
+
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+<script src="app.js"></script>
+
+
+</body>
+</html>
