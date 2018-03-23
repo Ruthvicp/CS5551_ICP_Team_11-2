@@ -1,0 +1,16 @@
+{
+  "name": "tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "author": "Kathryn Hodge",
+  "license": "ISC",
+  "devDependencies": {
+    "google-charts": "^1.0.0"
+  }
+}
