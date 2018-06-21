@@ -1,0 +1,99 @@
+<!Doctype html>
+<html lang="en" ng-app="weather">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>angular demo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+  </script>
+  </head>
+
+<body background="b.png">
+<h1 align="center" style="color: white"> Lite Weather
+    <img src="cloud.png" width="50" height="50"></img>
+</h1>
+<div ng-controller="weatherctrl">
+
+    <div class="col-sm-4">
+        <h2 style="color: white">
+            <div class="input-group">
+                <span class="input-group-addon">State</span>
+                <input id="state" class="form-control" type="text" style="width: 300px" ng-model="state"
+                       placeholder="Enter State code" aria-label="state" >
+
+                <a href="StateCodes.JPG" data-toggle="popover" title="Click to see state codes"
+               data-content="Some content inside the popover" >State codes</a>
+                </div>
+        </h2>
+        </div>
+
+        <div class="col-sm-4">
+            <h2 style="color: white">
+            <div class="input-group">
+                <span class="input-group-addon">City</span>
+                <input id="city" class="form-control"  type="text" style="width: 300px" ng-model="city"
+                       placeholder="Enter City Name" aria-label="city">
+            </div>
+            </h2>
+        </div>
+
+    <button id="btn" style="box-sizing: border-box" src="submit.gif" ng-click="getWeather()"> Get Weather </button>
+    <div></div>
+    <p></p>
+   <div class="weatherModule">
+      <p class="currentConditions" ng-bind="currentweather.html"></p>
+      <p class="currentConditions" ng-bind="currentweather2.html"></p>
+      <p class="currentConditions" ng-bind="currentweather3.html"></p>
+    <div class="currentIcon" ng-bind="currentIcon.html"></div>
+  </div>
+
+  <div id="weatherModule"> </div>
+</div>
+</body>
+
+<style>
+      .weatherModule {
+          background-color: #ffff99;
+          color:darkblue;
+          font-size: 25px;
+        height: 180px;
+        width: 400px;
+        padding: 1em;
+      }
+
+</style>
+</html>
+
+<script>
+    angular.module('weather', [])
+        .controller('weatherctrl', function($scope, $http) {
+
+            $scope.getWeather = function() {
+                var state = document.getElementById("state").value;
+                var city = document.getElementById("city").value;
+                var url = "https://api.wunderground.com/api/9d202530397a8b4c/conditions/q/" + state + "/" + city + ".json";
+                $http.get(url).success(function (data) {
+                        console.log(data);
+                        temp = data.current_observation.temp_f;
+                        humidity = data.current_observation.relative_humidity;
+                        localtime = data.current_observation.local_time_rfc822;
+                        feelslike = data.current_observation.feelslike_string;
+                        icon = data.current_observation.icon_url;
+                        var weather1 = data.current_observation.weather;
+                        console.log(temp);
+                        console.log(weather1);
+                        $scope.currentweather = {
+                            html: "Current temperature " + temp + " F and " + weather1 +""
+                        }
+                        $scope.currentweather2 = {
+                            html: "Humidity " + humidity + "Feels like " + feelslike +""
+                        }
+                        $scope.currentweather3 = {
+                        html: "Local Time " + localtime + ""
+                        }
+                        //document.getElementById("temp").value=temp;
+                    }
+                );
+            }
+        });
+</script>
